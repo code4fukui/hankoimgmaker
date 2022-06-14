@@ -1,0 +1,104 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+<script type="module">
+const br = () => document.body.appendChild(document.createElement("br"));
+const append = (tag, html) => {
+  const el = document.createElement(tag);
+  el.innerHTML = html;
+  document.body.appendChild(el);
+};
+const addCSS = (rules) => {
+  const style = document.createElement("style");
+  document.head.appendChild(style);
+  const styleSheet = style.sheet;
+  for (const selector in rules) {
+    const rule = rules[selector];
+    const props = [];
+    for (const prop in rule) {
+      props.push(`${prop}: ${rule[prop]};\n`);
+    }
+    styleSheet.insertRule(`${selector}{${props.join("")}}`, styleSheet.cssRules.length);
+  }
+};
+
+
+const title = "Hanko Image Maker";
+document.title = title;
+append("h1", title);
+
+const w = 350;
+
+document.body.style.textAlign = "center";
+
+const inpname = document.createElement("input");
+inpname.value = "判子";
+//inpname.value = "福福";
+//inpname.value = "福";
+inpname.style.fontSize = "200%";
+inpname.style.margin = "20px";
+inpname.maxLength = 3;
+document.body.appendChild(inpname);
+inpname.style.width = w + "px";
+
+br();
+
+const canvas = document.createElement("canvas");
+document.body.appendChild(canvas);
+
+br();
+
+const rng = document.createElement("input");
+rng.type = "range";
+rng.min = -Math.PI;
+rng.max = Math.PI;
+rng.step = 0.001;
+rng.value = .15;
+rng.style.width = w + "px";
+document.body.appendChild(rng);
+
+canvas.width = w;
+canvas.height = w;
+const aw = w / 30;
+const g = canvas.getContext("2d");
+
+const draw = () => {
+  g.save();
+  g.clearRect(0, 0, w, w);
+  g.strokeStyle = g.fillStyle = "rgba(232, 51, 17, .8)";
+  g.lineWidth = aw;
+  g.beginPath();
+  g.arc(w / 2, w / 2, w / 2 - aw, 0, 2 * Math.PI);
+  g.stroke();
+  g.beginPath();
+  g.arc(w / 2, w / 2, w / 2 - aw * 1.5, 0, 2 * Math.PI);
+  g.closePath();
+  g.clip();
+  g.translate(w / 2, w / 2);
+  g.rotate(-rng.value);
+  g.translate(-w / 2, -w / 2);
+  g.textAlign = "center";
+  const n = inpname.value;
+  if (n.length == 1) {
+    g.font = (w * .9) + "px serif";
+    g.fillText(n[0], w / 2, w / 2 + w / 22 * 8);
+  } else if (n.length == 2) {
+    g.font = (w / 2) + "px serif";
+    g.fillText(n[0], w / 2, w / 2 - w / 22);
+    g.fillText(n[1], w / 2, w / 2 + w / 22 * 9.5);
+  } else if (n.length == 3) {
+    g.font = (w / 3) + "px serif";
+    g.fillText(n[0], w / 2, w / 2 - w / 22 * 4);
+    g.fillText(n[1], w / 2, w / 2 + w / 22 * 3);
+    g.fillText(n[2], w / 2, w / 2 + w / 22 * 10);
+  }
+  g.restore();
+};
+draw();
+
+rng.onchange = () => draw();
+inpname.onchange = () => draw();
+
+br();
+append("footer", `<a href=https://github.com/code4fukui/hankoimgmaker/>src on GitHub</a>`);
+
+addCSS({ footer: { margin: "1em" }});
+</script>
