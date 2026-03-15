@@ -1,5 +1,7 @@
 # Hanko Image Maker
 
+> 日本語のREADMEはこちらです: [README.ja.md](README.ja.md)
+
 A tool to create images of Japanese hanko (personal seals).
 
 ## Demo
