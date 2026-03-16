@@ -16,4 +16,4 @@ https://code4fukui.github.io/hankoimgmaker/
 Enter the text for the hanko in the input field and the image will be generated in the canvas below. Use the slider to adjust the rotation angle of the hanko.
 
 ## License
-MIT License
+MIT License — see [LICENSE](LICENSE).
